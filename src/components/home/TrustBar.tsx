@@ -29,6 +29,8 @@ const TRUST_ITEMS = [
   },
 ];
 
+const SUBTLE_BORDER = 'rgba(255,255,255,0.1)';
+
 const TrustIcon = () => (
   <Box
     sx={{
@@ -49,9 +51,9 @@ const TrustIcon = () => (
 export const TrustBar = () => (
   <Box
     sx={{
-      backgroundColor: walherb.bgSection,
-      borderTop: `1px solid ${walherb.border}`,
-      borderBottom: `1px solid ${walherb.border}`,
+      backgroundColor: walherb.greenDark,
+      borderTop: `1px solid ${SUBTLE_BORDER}`,
+      borderBottom: `1px solid ${SUBTLE_BORDER}`,
       px: { xs: `${spacing.s16}px`, md: `${spacing.s80}px` },
       py: `${spacing.s40}px`,
     }}
@@ -80,7 +82,7 @@ export const TrustBar = () => (
                 fontWeight: fontWeight.semiBold,
                 fontSize: `${fontSize.t3}px`,
                 lineHeight: lineHeight.t3,
-                color: walherb.textPrimary,
+                color: '#FFFFFF',
               }}
             >
               {item.title}
@@ -91,7 +93,7 @@ export const TrustBar = () => (
                 fontWeight: fontWeight.medium,
                 fontSize: `${fontSize.b3}px`,
                 lineHeight: lineHeight.b3,
-                color: walherb.textSubtle,
+                color: walherb.footerDim,
               }}
             >
               {item.description}

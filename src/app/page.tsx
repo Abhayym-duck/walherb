@@ -83,6 +83,14 @@ const TRENDING: Product[] = [
     originalPrice: '₹2,700',
     image: '/Images/products/product-3.png',
   },
+  {
+    id: 10,
+    title: 'Garden of Life, Vitamin D3, 5000 IU, 180 Softgels',
+    rating: 4.8,
+    price: '₹2,150',
+    originalPrice: '₹2,800',
+    image: '/Images/products/product-4.png',
+  },
 ];
 
 
@@ -115,9 +123,9 @@ export default function HomePage({ onProductClick, onCategoryNav, onAccountClick
       <AnnouncementBar />
       <Header onCategoryNav={onCategoryNav} onAccountClick={onAccountClick} onAccountNavigate={onAccountNavigate} onLogoClick={onLogoClick} />
       <HeroBanner />
-      {/* Trending first, then feature highlights, then remaining sections */}
-      <ProductSection title={SECTIONS[0].title} products={SECTIONS[0].products} onProductClick={onProductClick} />
+      {/* Feature highlights first, then trending, then remaining sections */}
       <TrustBar />
+      <ProductSection title={SECTIONS[0].title} products={SECTIONS[0].products} onProductClick={onProductClick} />
       {SECTIONS.slice(1).map((section) => (
         <ProductSection
           key={section.title}

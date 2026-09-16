@@ -98,34 +98,36 @@ export const ProductSection = ({ title, products, onProductClick }: ProductSecti
       </Box>
 
       {/* Scrollable row — align-items: stretch equalises all card heights */}
-      <Box
-        ref={scrollRef}
-        sx={{
-          display: 'flex',
-          alignItems: 'stretch',
-          gap: `${spacing.s16}px`,
-          overflowX: 'auto',
-          scrollBehavior: 'smooth',
-          pb: `${spacing.s8}px`,
-          '&::-webkit-scrollbar': { display: 'none' },
-          msOverflowStyle: 'none',
-          scrollbarWidth: 'none',
-          position: 'relative',
-        }}
-      >
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} onClick={onProductClick} />
-        ))}
+      <Box sx={{ position: 'relative' }}>
+        <Box
+          ref={scrollRef}
+          sx={{
+            display: 'flex',
+            alignItems: 'stretch',
+            gap: `${spacing.s16}px`,
+            overflowX: 'auto',
+            scrollBehavior: 'smooth',
+            pb: `${spacing.s8}px`,
+            '&::-webkit-scrollbar': { display: 'none' },
+            msOverflowStyle: 'none',
+            scrollbarWidth: 'none',
+          }}
+        >
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} onClick={onProductClick} />
+          ))}
+        </Box>
 
-        {/* Right fade gradient */}
+        {/* Right fade gradient — overlaid, doesn't consume flex/scroll width */}
         <Box
           sx={{
-            position: 'sticky',
+            display: { xs: 'none', sm: 'block' },
+            position: 'absolute',
+            top: 0,
             right: 0,
-            width: 80,
-            height: '100%',
-            background: 'linear-gradient(to right, rgba(255,255,255,0.05), rgba(255,255,255,0.95))',
-            flexShrink: 0,
+            bottom: `${spacing.s8}px`,
+            width: 48,
+            background: 'linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,0.9))',
             pointerEvents: 'none',
           }}
         />
