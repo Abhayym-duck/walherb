@@ -1,0 +1,35 @@
+:root {
+  --font-dm-sans: 'DM Sans', sans-serif;
+  --font-space-grotesk: 'Space Grotesk', sans-serif;
+  --font-pacifico: 'Pacifico', cursive;
+  --font-great-vibes: 'Great Vibes', cursive;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  min-height: 100vh;
+  /* Guard against any single element pushing the page wider than the viewport
+     (causes an unwanted horizontal swipe on mobile). `clip` (not `hidden`)
+     avoids creating a scroll container, so it never forces overflow-y to auto
+     and the sticky header keeps working. Internal horizontally scrollable rails
+     use their own overflow container and are unaffected. */
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+/* Scrollbar hide utility */
+.scroll-hide::-webkit-scrollbar {
+  display: none;
+}
+.scroll-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

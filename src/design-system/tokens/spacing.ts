@@ -1,0 +1,75 @@
+export const spacing = {
+  s2: 2,
+  s4: 4,
+  s6: 6,
+  s8: 8,
+  s10: 10,
+  s12: 12,
+  s14: 14,
+  s16: 16,
+  s18: 18,
+  s20: 20,
+  s22: 22,
+  s24: 24,
+  s26: 26,
+  s28: 28,
+  s30: 30,
+  s32: 32,
+  s36: 36,
+  s40: 40,
+  s44: 44,
+  s48: 48,
+  s52: 52,
+  s56: 56,
+  s60: 60,
+  s64: 64,
+  s72: 72,
+  s80: 80,
+  s88: 88,
+  s96: 96,
+  s104: 104,
+  s112: 112,
+  s120: 120,
+} as const;
+
+export const semanticSpacing = {
+  // Inline / component padding
+  inlineXxs: spacing.s2,
+  inlineXs: spacing.s4,
+  inlineSm: spacing.s8,
+  inlineMd: spacing.s12,
+  inlineLg: spacing.s16,
+  inlineXl: spacing.s20,
+  inlineXxl: spacing.s24,
+
+  // Gap between sibling elements
+  gapXs: spacing.s4,
+  gapSm: spacing.s8,
+  gapMd: spacing.s12,
+  gapLg: spacing.s16,
+  gapXl: spacing.s24,
+  gapXxl: spacing.s32,
+
+  // Component internal padding
+  componentXxs: spacing.s2,
+  componentXs: spacing.s4,
+  componentSm: spacing.s8,
+  componentMd: spacing.s12,
+  componentLg: spacing.s16,
+  componentXl: spacing.s20,
+  componentXxl: spacing.s24,
+
+  // Page horizontal padding (responsive per breakpoint)
+  pageMobile: spacing.s16,
+  pageTablet: spacing.s24,
+  pageDesktop: spacing.s32,
+  pageWide: spacing.s48,
+
+  // Section vertical rhythm
+  sectionXs: spacing.s24,
+  sectionSm: spacing.s32,
+  sectionMd: spacing.s48,
+  sectionLg: spacing.s64,
+  sectionXl: spacing.s80,
+  sectionXxl: spacing.s120,
+} as const;
