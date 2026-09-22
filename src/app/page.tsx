@@ -122,7 +122,7 @@ export default function HomePage({ onProductClick, onCategoryNav, onAccountClick
     <main>
       <AnnouncementBar />
       <Header onCategoryNav={onCategoryNav} onAccountClick={onAccountClick} onAccountNavigate={onAccountNavigate} onLogoClick={onLogoClick} />
-      <HeroBanner />
+      <HeroBanner onShopClick={() => onCategoryNav?.('supplements')} />
       {/* Feature highlights first, then trending, then remaining sections */}
       <TrustBar />
       <ProductSection title={SECTIONS[0].title} products={SECTIONS[0].products} onProductClick={onProductClick} />

@@ -19,7 +19,11 @@ const SLIDES = [
 const HEADING  = 'Stop paying 3x on\nInternational shipping';
 const SUBTITLE = 'A curated import shop for Indian families who want trusted American brands – vitamins, supplements, skincare, bath essentials, and baby care – with duties prepaid and authenticity guaranteed.';
 
-export const HeroBanner = () => {
+interface HeroBannerProps {
+  onShopClick?: () => void;
+}
+
+export const HeroBanner = ({ onShopClick }: HeroBannerProps) => {
   const [current, setCurrent] = useState(0);
 
   const next = useCallback(() => setCurrent((c) => (c + 1) % SLIDES.length), []);
@@ -32,6 +36,8 @@ export const HeroBanner = () => {
 
   return (
     <Box
+      // Mobile: the whole banner is the CTA (button is hidden there); nav controls stop propagation.
+      onClick={() => { if (window.innerWidth < 600) onShopClick?.(); }}
       sx={{
         position: 'relative',
         height: { xs: 240, sm: 340, md: 480 },
@@ -42,6 +48,7 @@ export const HeroBanner = () => {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         transition: 'background-image 0.4s ease',
+        cursor: { xs: 'pointer', sm: 'default' },
       }}
     >
       {/* Text overlay */}
@@ -54,7 +61,7 @@ export const HeroBanner = () => {
           display: 'flex',
           flexDirection: 'column',
           gap: { xs: '12px', md: '20px' },
-          maxWidth: { xs: '55%', sm: '50%', md: 540 },
+          maxWidth: { xs: '72%', sm: '50%', md: 540 },
           zIndex: 2,
         }}
       >
@@ -87,8 +94,9 @@ export const HeroBanner = () => {
 
         <Box
           component="button"
+          onClick={(e) => { e.stopPropagation(); onShopClick?.(); }}
           sx={{
-            display: 'inline-flex',
+            display: { xs: 'none', sm: 'inline-flex' },
             alignItems: 'center',
             gap: '6px',
             alignSelf: 'flex-start',
@@ -118,16 +126,17 @@ export const HeroBanner = () => {
         </Box>
       </Box>
 
-      {/* Left nav */}
+      {/* Left nav — bottom-aligned on mobile so it can't overlap the headline */}
       <Box
         component="button"
-        onClick={prev}
+        onClick={(e) => { e.stopPropagation(); prev(); }}
         aria-label="Previous slide"
         sx={{
           position: 'absolute',
           left: { xs: '10px', md: '20px' },
-          top: '50%',
-          transform: 'translateY(-50%)',
+          top: { xs: 'auto', md: '50%' },
+          bottom: { xs: `${spacing.s16}px`, md: 'auto' },
+          transform: { xs: 'none', md: 'translateY(-50%)' },
           backgroundColor: 'rgba(255,255,255,0.15)',
           border: '1px solid rgba(255,255,255,0.3)',
           borderRadius: '50%',
@@ -144,16 +153,17 @@ export const HeroBanner = () => {
         <KeyboardArrowLeftIcon sx={{ fontSize: { xs: 18, md: 22 }, color: '#FFFFFF' }} />
       </Box>
 
-      {/* Right nav */}
+      {/* Right nav — bottom-aligned on mobile so it can't overlap the headline */}
       <Box
         component="button"
-        onClick={next}
+        onClick={(e) => { e.stopPropagation(); next(); }}
         aria-label="Next slide"
         sx={{
           position: 'absolute',
           right: { xs: '10px', md: '20px' },
-          top: '50%',
-          transform: 'translateY(-50%)',
+          top: { xs: 'auto', md: '50%' },
+          bottom: { xs: `${spacing.s16}px`, md: 'auto' },
+          transform: { xs: 'none', md: 'translateY(-50%)' },
           backgroundColor: 'rgba(255,255,255,0.15)',
           border: '1px solid rgba(255,255,255,0.3)',
           borderRadius: '50%',
@@ -186,7 +196,7 @@ export const HeroBanner = () => {
           <Box
             key={i}
             component="button"
-            onClick={() => setCurrent(i)}
+            onClick={(e) => { e.stopPropagation(); setCurrent(i); }}
             aria-label={`Go to slide ${i + 1}`}
             sx={{
               width: i === current ? 28 : 8,
