@@ -12,6 +12,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 import { useCart, type CheckoutPayload } from '../../../context/CartContext';
+import { useShipTo } from '../../../context/ShipToContext';
 import { walherb } from '../../../design-system/tokens/colors';
 import { fontFamily, fontWeight, fontSize } from '../../../design-system/tokens/typography';
 import type { Product } from '../../home/ProductCard';
@@ -47,6 +48,7 @@ export const ProductPurchasePanel = ({
   onBuyNow,
 }: ProductPurchasePanelProps) => {
   const { addItem, openDrawer } = useCart();
+  const { formatPrice } = useShipTo();
   const [qty, setQty] = useState(1);
   const [buyNowLoading, setBuyNowLoading] = useState(false);
   const [addCartStatus, setAddCartStatus] = useState<'idle' | 'adding' | 'added'>('idle');
@@ -84,7 +86,7 @@ export const ProductPurchasePanel = ({
         pkgLabel: pkg.label,
         priceValue: pkg.priceValue,
         originalValue: pkg.originalValue,
-        formattedPrice: pkg.price,
+        formattedPrice: formatPrice(pkg.priceValue),
         qty,
         sku: pkg.sku,
       });
@@ -96,7 +98,7 @@ export const ProductPurchasePanel = ({
         pkgLabel: pkg.label,
         priceValue: pkg.priceValue,
         originalValue: pkg.originalValue,
-        formattedPrice: pkg.price,
+        formattedPrice: formatPrice(pkg.priceValue),
         qty,
         sku: pkg.sku,
       });
@@ -115,7 +117,7 @@ export const ProductPurchasePanel = ({
         pkgLabel: pkg.label,
         priceValue: pkg.priceValue,
         originalValue: pkg.originalValue,
-        formattedPrice: pkg.price,
+        formattedPrice: formatPrice(pkg.priceValue),
         qty,
         sku: pkg.sku,
       });
@@ -169,7 +171,7 @@ export const ProductPurchasePanel = ({
                     lineHeight: '31.2px',
                     color: '#3E3E3C',
                   }}>
-                    {pkg.price}
+                    {formatPrice(pkg.priceValue)}
                   </Typography>
                   <Typography sx={{
                     fontFamily: "'Space Grotesk', sans-serif",
@@ -179,7 +181,7 @@ export const ProductPurchasePanel = ({
                     color: '#B5B0B0',
                     textDecoration: 'line-through',
                   }}>
-                    {pkg.originalPrice}
+                    {formatPrice(pkg.originalValue)}
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
@@ -219,7 +221,7 @@ export const ProductPurchasePanel = ({
                         color: '#29713C',
                         whiteSpace: 'nowrap',
                       }}>
-                        Save {savingsPct}% (₹{savings.toLocaleString('en-IN')})
+                        Save {savingsPct}% ({formatPrice(savings)})
                       </Typography>
                     </Box>
                   )}

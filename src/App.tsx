@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CartProvider, useCart } from './context/CartContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ShipToProvider } from './context/ShipToContext';
 import HomePage from './app/page';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CategoryPage from './pages/CategoryPage';
@@ -304,7 +305,9 @@ export default function App() {
   return (
     <CartProvider>
       <AuthProvider>
-        <AppRoutes />
+        <ShipToProvider>
+          <AppRoutes />
+        </ShipToProvider>
       </AuthProvider>
     </CartProvider>
   );

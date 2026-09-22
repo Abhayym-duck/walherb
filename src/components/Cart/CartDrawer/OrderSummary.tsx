@@ -5,13 +5,13 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { fontFamily, fontWeight } from '../../../design-system/tokens/typography';
+import { useShipTo } from '../../../context/ShipToContext';
 
 interface OrderSummaryProps {
   itemCount: number;
+  /** Raw INR total, converted for display via ShipToContext. */
   itemsTotal: number;
 }
-
-const fmt = (n: number) => `₹${n.toLocaleString('en-IN')}`;
 
 const Row = ({
   label,
@@ -46,7 +46,9 @@ const Row = ({
   </Box>
 );
 
-export const OrderSummary = ({ itemCount, itemsTotal }: OrderSummaryProps) => (
+export const OrderSummary = ({ itemCount, itemsTotal }: OrderSummaryProps) => {
+  const { formatPrice } = useShipTo();
+  return (
   <Box sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
     <Typography sx={{
       fontFamily: fontFamily.sans,
@@ -61,7 +63,7 @@ export const OrderSummary = ({ itemCount, itemsTotal }: OrderSummaryProps) => (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
       {/* Items total */}
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-        <Row label={`Items Total (${itemCount})`} value={fmt(itemsTotal)} />
+        <Row label={`Items Total (${itemCount})`} value={formatPrice(itemsTotal)} />
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <AccessTimeIcon sx={{ fontSize: 16, color: '#41403B' }} />
           <Typography sx={{
@@ -82,8 +84,9 @@ export const OrderSummary = ({ itemCount, itemsTotal }: OrderSummaryProps) => (
 
     <Divider sx={{ borderColor: '#EBEBEB' }} />
 
-    <Row label="Total amount" value={fmt(itemsTotal)} total />
+    <Row label="Total amount" value={formatPrice(itemsTotal)} total />
   </Box>
-);
+  );
+};
 
 export default OrderSummary;

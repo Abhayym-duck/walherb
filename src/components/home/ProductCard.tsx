@@ -10,6 +10,7 @@ import { fontFamily, fontWeight, fontSize, lineHeight } from '../../design-syste
 import { spacing } from '../../design-system/tokens/spacing';
 import { radius } from '../../design-system/tokens/radius';
 import { useCart } from '../../context/CartContext';
+import { useShipTo } from '../../context/ShipToContext';
 import type { ProductCategory } from '../../pages/pdp/types';
 
 // Turn a price string like "₹1,750" into the number 1750.
@@ -21,6 +22,10 @@ export interface Product {
   rating: number;
   price: string;
   originalPrice: string;
+  /** Raw INR value backing `price`. Falls back to parsing `price` when omitted. */
+  priceValue?: number;
+  /** Raw INR value backing `originalPrice`. Falls back to parsing `originalPrice` when omitted. */
+  originalValue?: number;
   image: string;
   /** Manufacturer / brand, shown as "By: {brand}" on the product page. */
   brand?: string;
@@ -38,15 +43,19 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product, onClick, fluid = false }: ProductCardProps) => {
   const { addItem, openDrawer } = useCart();
+  const { formatPrice } = useShipTo();
+
+  const priceValue = product.priceValue ?? parsePrice(product.price);
+  const originalValue = product.originalValue ?? parsePrice(product.originalPrice);
 
   const handleAdd = () => {
     addItem({
       product,
       pkgIdx: 0,
       pkgLabel: '',
-      priceValue: parsePrice(product.price),
-      originalValue: parsePrice(product.originalPrice),
-      formattedPrice: product.price,
+      priceValue,
+      originalValue,
+      formattedPrice: formatPrice(priceValue),
       qty: 1,
       sku: `SKU-${product.id}`,
     });
@@ -182,7 +191,7 @@ export const ProductCard = ({ product, onClick, fluid = false }: ProductCardProp
             color: walherb.textProduct,
           }}
         >
-          {product.price}
+          {formatPrice(priceValue)}
         </Typography>
         <Typography
           sx={{
@@ -194,7 +203,7 @@ export const ProductCard = ({ product, onClick, fluid = false }: ProductCardProp
             textDecoration: 'line-through',
           }}
         >
-          {product.originalPrice}
+          {formatPrice(originalValue)}
         </Typography>
       </Box>
     </Box>

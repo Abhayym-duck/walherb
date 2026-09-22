@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -10,8 +10,15 @@ import { walherb } from '../../design-system/tokens/colors';
 import { fontFamily, fontWeight, fontSize, lineHeight } from '../../design-system/tokens/typography';
 import { spacing } from '../../design-system/tokens/spacing';
 import { radius } from '../../design-system/tokens/radius';
+import { useShipTo } from '../../context/ShipToContext';
+import { ShipToModal } from './ShipToModal';
 
-export const AnnouncementBar = () => (
+export const AnnouncementBar = () => {
+  const { country } = useShipTo();
+  const [shipToOpen, setShipToOpen] = useState(false);
+
+  return (
+  <>
   <Box
     sx={{
       backgroundColor: walherb.announcement,
@@ -83,7 +90,10 @@ export const AnnouncementBar = () => (
       }}
     >
       {/* Ship to */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: `${spacing.s8}px`, cursor: 'pointer' }}>
+      <Box
+        onClick={() => setShipToOpen(true)}
+        sx={{ display: 'flex', alignItems: 'center', gap: `${spacing.s8}px`, cursor: 'pointer' }}
+      >
         <Typography
           sx={{
             fontFamily: fontFamily.sans,
@@ -92,7 +102,7 @@ export const AnnouncementBar = () => (
             color: '#FFFFFF',
           }}
         >
-          Ship to India
+          Ship to {country.name}
         </Typography>
         <KeyboardArrowDownIcon sx={{ fontSize: 16, color: '#FFFFFF' }} />
       </Box>
@@ -139,6 +149,9 @@ export const AnnouncementBar = () => (
       </Box>
     </Box>
   </Box>
-);
+  <ShipToModal open={shipToOpen} onClose={() => setShipToOpen(false)} />
+  </>
+  );
+};
 
 export default AnnouncementBar;

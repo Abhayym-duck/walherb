@@ -16,6 +16,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import CloseIcon from '@mui/icons-material/Close';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import { useCart } from '../context/CartContext';
+import { useShipTo } from '../context/ShipToContext';
 import { fontFamily, fontWeight } from '../design-system/tokens/typography';
 import { QuickPayBadge } from '../components/payments/QuickPayBadge';
 
@@ -117,6 +118,7 @@ interface Props {
 
 export default function CheckoutPage({ onBack, onQuickCheckout }: Props) {
   const { items, totalValue } = useCart();
+  const { formatPrice } = useShipTo();
 
   const [email,          setEmail]          = useState('');
   const [newsletter,     setNewsletter]     = useState(false);
@@ -138,7 +140,7 @@ export default function CheckoutPage({ onBack, onQuickCheckout }: Props) {
 
   const discount     = promoApplied ? Math.round(totalValue * 0.1) : 0;
   const total        = totalValue - discount;
-  const fmt          = (n: number) => `₹${n.toLocaleString('en-IN')}`;
+  const fmt          = formatPrice;
   const deliveryRange = getDeliveryRange();
   const totalQty     = items.reduce((s, i) => s + i.qty, 0);
 
@@ -731,7 +733,7 @@ export default function CheckoutPage({ onBack, onQuickCheckout }: Props) {
                             lineHeight: '28.6px',
                             color: '#3E3E3C',
                           }}>
-                            {item.formattedPrice}
+                            {formatPrice(item.priceValue)}
                           </Typography>
                           {savings > 0 && (
                             <Typography sx={{
@@ -742,7 +744,7 @@ export default function CheckoutPage({ onBack, onQuickCheckout }: Props) {
                               color: '#B5B0B0',
                               textDecoration: 'line-through',
                             }}>
-                              ₹{item.originalValue.toLocaleString('en-IN')}
+                              {formatPrice(item.originalValue)}
                             </Typography>
                           )}
                         </Box>

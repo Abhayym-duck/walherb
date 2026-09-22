@@ -9,6 +9,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { fontFamily, fontWeight } from '../../../design-system/tokens/typography';
 import type { CartItem } from '../../../context/CartContext';
+import { useShipTo } from '../../../context/ShipToContext';
 
 const InternationalShippingTag = () => (
   <svg width="164" height="33" viewBox="0 0 164 33" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', flexShrink: 0 }}>
@@ -34,6 +35,7 @@ interface CartItemRowProps {
 }
 
 export const CartItemRow = ({ item, onRemove, onQtyChange }: CartItemRowProps) => {
+  const { formatPrice } = useShipTo();
   const savings = item.originalValue - item.priceValue;
   const deliveryRange = getDefaultDeliveryRange();
 
@@ -132,7 +134,7 @@ export const CartItemRow = ({ item, onRemove, onQtyChange }: CartItemRowProps) =
             lineHeight: '28.6px',
             color: '#3E3E3C',
           }}>
-            {item.formattedPrice}
+            {formatPrice(item.priceValue)}
           </Typography>
           {savings > 0 && (
             <Typography sx={{
@@ -143,7 +145,7 @@ export const CartItemRow = ({ item, onRemove, onQtyChange }: CartItemRowProps) =
               color: '#B5B0B0',
               textDecoration: 'line-through',
             }}>
-              ₹{item.originalValue.toLocaleString('en-IN')}
+              {formatPrice(item.originalValue)}
             </Typography>
           )}
         </Box>
