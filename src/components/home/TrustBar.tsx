@@ -3,103 +3,90 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import CheckIcon from '@mui/icons-material/Check';
+import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
+import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined';
+import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
+import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined';
 import { walherb } from '../../design-system/tokens/colors';
 import { fontFamily, fontWeight, fontSize, lineHeight } from '../../design-system/tokens/typography';
 import { spacing } from '../../design-system/tokens/spacing';
 import { radius } from '../../design-system/tokens/radius';
 
 const TRUST_ITEMS = [
-  {
-    title: 'Straight from the source',
-    description: 'USA, UK, India, UAE, Japan & more. No middlemen.',
-  },
-  {
-    title: 'One price. No surprises.',
-    description: 'Customs & duties included. Always.',
-  },
-  {
-    title: 'Fast, tracked delivery',
-    description: 'Most orders arrive in 3–7 days.',
-  },
-  {
-    title: 'Wrong or damaged? Full refund.',
-    description:
-      "If your item arrives broken, missing, or not as described, you're refunded in full.",
-  },
+  { title: 'Straight from the source', Icon: PublicOutlinedIcon },
+  { title: 'One price. No surprises.', Icon: WorkspacePremiumOutlinedIcon },
+  { title: 'Fast, tracked delivery', Icon: LocalShippingOutlinedIcon },
+  { title: 'Wrong or damaged? Full refund.', Icon: VerifiedOutlinedIcon },
 ];
 
-const SUBTLE_BORDER = 'rgba(255,255,255,0.1)';
+// Repeat the set so the strip has enough badges to loop seamlessly at any width.
+const MARQUEE_ITEMS = [...TRUST_ITEMS, ...TRUST_ITEMS, ...TRUST_ITEMS, ...TRUST_ITEMS];
 
-const TrustIcon = () => (
+const TrustBadge = ({ title, Icon }: { title: string; Icon: typeof PublicOutlinedIcon }) => (
   <Box
     sx={{
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center',
-      width: 32,
-      height: 32,
-      borderRadius: `${radius.radiusFull}px`,
-      background: `linear-gradient(141.7deg, ${walherb.greenPrimary} 32.95%, #4DBE5C 89.66%)`,
+      gap: `${spacing.s12}px`,
       flexShrink: 0,
+      whiteSpace: 'nowrap',
     }}
   >
-    <CheckIcon sx={{ fontSize: 14, color: '#FFFFFF' }} />
+    <Icon sx={{ fontSize: 20, color: '#FFFFFF', opacity: 0.9 }} />
+    <Typography
+      sx={{
+        fontFamily: fontFamily.sans,
+        fontWeight: fontWeight.semiBold,
+        fontSize: `${fontSize.b2}px`,
+        lineHeight: lineHeight.b2,
+        color: '#FFFFFF',
+      }}
+    >
+      {title}
+    </Typography>
   </Box>
+);
+
+const Divider = () => (
+  <Box
+    sx={{
+      width: 4,
+      height: 4,
+      borderRadius: `${radius.radiusFull}px`,
+      backgroundColor: 'rgba(255,255,255,0.4)',
+      flexShrink: 0,
+    }}
+  />
 );
 
 export const TrustBar = () => (
   <Box
     sx={{
-      backgroundColor: walherb.greenDark,
-      borderTop: `1px solid ${SUBTLE_BORDER}`,
-      borderBottom: `1px solid ${SUBTLE_BORDER}`,
-      px: { xs: `${spacing.s16}px`, md: `${spacing.s80}px` },
-      py: `${spacing.s40}px`,
+      position: 'relative',
+      backgroundColor: walherb.greenPrimary,
+      py: `${spacing.s16}px`,
+      overflow: 'hidden',
     }}
   >
     <Box
       sx={{
-        display: 'grid',
-        gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(4, 1fr)' },
-        gap: { xs: `${spacing.s24}px`, md: `${spacing.s32}px` },
+        display: 'flex',
+        alignItems: 'center',
+        gap: `${spacing.s24}px`,
+        width: 'max-content',
+        animation: 'walherb-trust-marquee 28s linear infinite',
+        '@keyframes walherb-trust-marquee': {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-25%)' },
+        },
+        '&:hover': { animationPlayState: 'paused' },
       }}
     >
-      {TRUST_ITEMS.map((item) => (
-        <Box
-          key={item.title}
-          sx={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            gap: `${spacing.s16}px`,
-          }}
-        >
-          <TrustIcon />
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: `${spacing.s4}px` }}>
-            <Typography
-              sx={{
-                fontFamily: fontFamily.sans,
-                fontWeight: fontWeight.semiBold,
-                fontSize: `${fontSize.t3}px`,
-                lineHeight: lineHeight.t3,
-                color: '#FFFFFF',
-              }}
-            >
-              {item.title}
-            </Typography>
-            <Typography
-              sx={{
-                fontFamily: fontFamily.sans,
-                fontWeight: fontWeight.medium,
-                fontSize: `${fontSize.b3}px`,
-                lineHeight: lineHeight.b3,
-                color: walherb.footerDim,
-              }}
-            >
-              {item.description}
-            </Typography>
-          </Box>
-        </Box>
+      {MARQUEE_ITEMS.map((item, i) => (
+        <React.Fragment key={`${item.title}-${i}`}>
+          {i > 0 && <Divider />}
+          <TrustBadge title={item.title} Icon={item.Icon} />
+        </React.Fragment>
       ))}
     </Box>
   </Box>
